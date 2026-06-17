@@ -1,0 +1,297 @@
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情书</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'STKaiti', 'KaiTi', serif;
+            background: linear-gradient(135deg, #ffe4e1 0%, #ffc0cb 50%, #ffb6c1 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 24px;
+            animation: fall linear infinite;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .love-letter {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 60px 40px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        .heart {
+            font-size: 80px;
+            margin: 30px 0;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .to-name {
+            font-size: 28px;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .letter-content {
+            font-size: 18px;
+            line-height: 2;
+            color: #666;
+            margin-bottom: 30px;
+            text-indent: 2em;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.5);
+        }
+
+        .envelope-scene {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(238, 90, 90, 0.4);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 155px solid transparent;
+            border-right: 155px solid transparent;
+            border-top: 120px solid #ff5252;
+            z-index: 2;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 145px solid transparent;
+            border-right: 145px solid transparent;
+            border-top: 110px solid #ffebee;
+            z-index: 3;
+        }
+
+        .letter-paper {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 260px;
+            height: 160px;
+            background: linear-gradient(to bottom, #fffaf0, #fff5ee);
+            border-radius: 3px;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            z-index: 1;
+            transition: transform 2s ease-out;
+            transform-origin: top center;
+        }
+
+        .letter-paper.reveal {
+            transform: translateX(-50%) translateY(-100px);
+        }
+
+        .secret-text {
+            font-size: 24px;
+            color: #ff69b4;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1s ease 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            margin-top: 40px;
+            background: transparent;
+            color: #ff69b4;
+            border: 2px solid #ff69b4;
+            padding: 12px 40px;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #ff69b4;
+            color: white;
+        }
+        /* 隐藏音频控件 */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 音频标签：src替换成歌曲真实mp3直链 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <div class="love-letter" id="loveLetter">
+            <div class="to-name">To 俞桦：</div>
+            <div class="heart">💕</div>
+            <div class="letter-content">
+                在这个美好的日子里，我想告诉你，你就像春天里盛开的花朵，
+                美丽而动人。每一次见到你，我的心都会不由自主地跳动。
+                你是我生命中最美好的遇见，希望这份心意能够传递到你的心中。
+            </div>
+            <button class="next-btn" id="nextBtn">下一步</button>
+        </div>
+
+        <div class="envelope-scene" id="envelopeScene">
+            <div class="envelope">
+                <div class="letter-paper" id="letterPaper">
+                    <div class="secret-text">我喜欢你</div>
+                </div>
+            </div>
+            <button class="back-btn" id="backBtn">返回</button>
+        </div>
+    </div>
+
+    <script>
+        // 获取背景音乐对象
+        const bgMusic = document.getElementById('bgMusic');
+        // 标记是否已经播放过音乐（浏览器只能交互后播放一次）
+        let musicPlayed = false;
+
+        function createFlowers() {
+            const flowerEmojis = ['🌸', '🌺', '🌼', '🌷', '💐', '🌻'];
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 20; i++) {
+                const flower = document.createElement('span');
+                flower.className = 'flower';
+                flower.textContent = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+                flower.style.left = Math.random() * 100 + 'vw';
+                flower.style.animationDuration = (5 + Math.random() * 5) + 's';
+                flower.style.animationDelay = Math.random() * 5 + 's';
+                flower.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(flower);
+            }
+        }
+
+        const nextBtn = document.getElementById('nextBtn');
+        const backBtn = document.getElementById('backBtn');
+        const loveLetter = document.getElementById('loveLetter');
+        const envelopeScene = document.getElementById('envelopeScene');
+        const letterPaper = document.getElementById('letterPaper');
+
+        // 点击下一步触发播放背景音乐
+        nextBtn.addEventListener('click', () => {
+            // 未播放过则启动音乐
+            if (!musicPlayed) {
+                bgMusic.play().then(() => {
+                    musicPlayed = true;
+                }).catch(err => {
+                    console.log("音乐播放失败，请更换音频直链", err);
+                });
+            }
+            loveLetter.style.display = 'none';
+            envelopeScene.style.display = 'flex';
+            setTimeout(() => {
+                letterPaper.classList.add('reveal');
+            }, 300);
+        });
+
+        backBtn.addEventListener('click', () => {
+            letterPaper.classList.remove('reveal');
+            setTimeout(() => {
+                envelopeScene.style.display = 'none';
+                loveLetter.style.display = 'block';
+            }, 2000);
+        });
+
+        createFlowers();
+    </script>
+</body>
+</html>
